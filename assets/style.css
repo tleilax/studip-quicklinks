@@ -1,0 +1,27 @@
+/* CSS */ 
+div#barBottomright li {
+	display: inline-block;
+	position: relative;
+}
+.quick-link-list {
+	background: #eee;
+	border: 1px solid #888;
+	border-top: 0;
+	color: #444;
+	display: none;
+	position: absolute;
+	text-align: left;
+	z-index: 10;
+}
+.hovered .quick-link-list {
+	display: block;
+}
+div.quick-link-list li {
+	display: block !important;
+}
+div.quick-link-list a {
+	color: #24437c !important;
+}
+div.quick-link-list a:hover {
+	color: #f33 !important;
+}
