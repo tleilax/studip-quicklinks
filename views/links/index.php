@@ -1,10 +1,10 @@
 <?= $this->render_partial('links/edit') ?>
 
-<table class="default">
+<table class="quicklinks default">
 	<thead>
 		<tr>
-			<th>Link</th>
-			<th>Optionen</th>
+			<th><?= _('Link') ?></th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -14,9 +14,6 @@
 				<a href="<?= $link['link'] ?>"><?= $link['title'] ?></a>
 			</td>
 			<td style="text-align: right;">
-				<a href="<?= $controller->url_for('links/edit', $link['link_id']) ?>">
-					<?= Assets::img('icons/16/blue/edit.png') ?>
-				</a>
 			<?php if ($index): ?>
 				<a href="<?= $controller->url_for('links/move', $link['link_id'], 'up') ?>">
 					<?= Assets::img('icons/16/yellow/arr_1up.png', array(
@@ -43,6 +40,9 @@
 					'alt'   => 'niedriger',
 				)) ?>
 			<?php endif; ?>
+    			<a href="<?= $controller->url_for('links/edit', $link['link_id']) ?>">
+    				<?= Assets::img('icons/16/blue/edit.png') ?>
+    			</a>
 				<a href="<?= $controller->url_for('links/delete', $link['link_id']) ?>" onclick="return confirm('Wirklich?')">
 					<?= Assets::img('icons/16/blue/trash.png') ?>
 				</a>
@@ -51,3 +51,19 @@
 	<?php endforeach; ?>
 	</tbody>
 </table>
+
+<?
+$infobox = array(
+    'picture' => 'infobox/administration.jpg',
+    'content' => array(
+        array(
+            'kategorie' => _('Infobox'),
+            'eintrag'   => array(
+                array(
+                    'text' => 'Infobox',
+                    'icon' => 'icons/16/black/search.png'
+                )
+            )
+        )
+    )
+);        

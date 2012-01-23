@@ -1,3 +1,5 @@
+<? use Studip\Button, Studip\LinkButton; ?>
+
 <form action="<?= $controller->url_for('links/edit', @$link['link_id']) ?>" method="post">
 	<fieldset>
 		<legend><?= @$link ? 'Link bearbeiten' : 'Neuen Link eintagen' ?></legend>
@@ -13,10 +15,8 @@
 		</div>
 
 		<div class="type-button">
-			<?= makebutton('speichern', 'input', null, 'store') ?>
-			<a href="<?= $controller->url_for('links/index') ?>">
-				<?= makebutton('abbrechen', 'img') ?>
-			</a>
+			<?= Button::createAccept('speichern', 'store') ?>
+			<?= LinkButton::createCancel('abbrechen', $controller->url_for('links/index')) ?>
 		</div>
 	</fieldset>
 </form>

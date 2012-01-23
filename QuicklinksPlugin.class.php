@@ -23,7 +23,8 @@ class QuicklinksPlugin extends StudIPPlugin implements SystemPlugin {
 		), 'links'));
 		Navigation::insertItem('/links/quick', $navigation, 'logout');
 
-		PageLayout::addStylesheet($this->getPluginURL().'/assets/style.css');
+		PageLayout::addStylesheet($this->getPluginURL().'/assets/quicklinks.css');
+		
 		PageLayout::addScript($this->getPluginURL().'/assets/mustache-0.4.0-dev.js');
 		PageLayout::addScript($this->getPluginURL().'/assets/patch.js');
 		PageLayout::addHeadElement('script', array(), 'STUDIP.Quicklinks = '.json_encode(array(

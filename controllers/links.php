@@ -3,7 +3,7 @@ class LinksController extends AuthenticatedController {
 
     public function before_filter(&$action, &$args) {
 
-		$this->set_layout($GLOBALS['template_factory']->open('layouts/base_without_infobox'));
+		$this->set_layout($GLOBALS['template_factory']->open('layouts/base'));
 		$this->user_id = $GLOBALS['auth']->auth['uid'];
 //		PageLayout::setTitle('');
 
@@ -26,10 +26,10 @@ class LinksController extends AuthenticatedController {
 
 			if (empty($errors)) {
 				Quicklink::Save($this->user_id, $id, Request::get('link'), Request::get('title'));
-				$this->flash['success'] = 'Der Link wurde gespeichert';
+        		PageLayout::postMessage(Messagebox::success(_('Der Link wurde gespeichert.')));
 				$this->redirect('links/index');		
 			} else {			
-				$this->flash['error'] = implode(".\n", $errors);
+        		PageLayout::postMessage(Messagebox::error(_('Es sind Fehler aufgetreten.'), $errors));
 			}
 		}
 		
@@ -40,12 +40,13 @@ class LinksController extends AuthenticatedController {
 	
 	public function move_action($id, $direction) {
 		Quicklink::Move($this->user_id, $id, $direction);
-		$this->flash['success'] = 'Der Link wurde verschoben';
+		PageLayout::postMessage(Messagebox::success(_('Der Link wurde verschoben.')));
 		$this->redirect('links/index');
 	}
 	
 	public function delete_action($id) {
 		Quicklink::Delete($this->user_id, $id);
+		PageLayout::postMessage(Messagebox::success(_('Der Link wurde gelöscht.')));
 		$this->redirect('links/index');
 	}
 
