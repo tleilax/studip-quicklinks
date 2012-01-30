@@ -4,9 +4,6 @@ require 'bootstrap.php';
 /**
  * QuicklinksPlugin.class.php
  *
- * This plugin uses janl's JS template engine "Mustache"
- * https://github.com/janl/mustache.js
- *
  * @author  Jan-Hendrik Willms <tleilax+studip@gmail.com>
  * @version 0.4
  */
