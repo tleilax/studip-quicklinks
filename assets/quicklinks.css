@@ -1,27 +1,31 @@
-/* CSS */ 
 div#barBottomright li {
-	display: inline-block;
-	position: relative;
-}
+  display: inline-block;
+  position: relative; }
+
 .quick-link-list {
-	background: #eee;
-	border: 1px solid #888;
-	border-top: 0;
-	color: #444;
-	display: none;
-	position: absolute;
-	text-align: left;
-	z-index: 10;
-}
+  background: #eeeeee;
+  border: 1px solid #888888;
+  border-top: 0;
+  box-shadow: 2px 2px 5px black;
+  color: #444444;
+  display: none;
+  position: absolute;
+  text-align: left;
+  z-index: 10; }
+  .quick-link-list li {
+    display: block !important; }
+  .quick-link-list a {
+    color: #24437c !important;
+    display: block;
+    margin: 0 !important;
+    padding: 2px 5px; }
+    .quick-link-list a:hover {
+      color: #ff3333 !important; }
+
 .hovered .quick-link-list {
-	display: block;
-}
-div.quick-link-list li {
-	display: block !important;
-}
-div.quick-link-list a {
-	color: #24437c !important;
-}
-div.quick-link-list a:hover {
-	color: #f33 !important;
-}
+  display: block; }
+
+table.quicklinks tbody td:last-child {
+  visibility: hidden; }
+table.quicklinks tbody tr:hover td:last-child {
+  visibility: visible; }

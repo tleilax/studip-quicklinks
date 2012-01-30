@@ -2,15 +2,15 @@
 
 <form action="<?= $controller->url_for('links/edit', @$link['link_id']) ?>" method="post">
 	<fieldset>
-		<legend><?= @$link ? 'Link bearbeiten' : 'Neuen Link eintagen' ?></legend>
+		<legend><?= @$link ? 'Link bearbeiten' : 'Neuen Link eintragen' ?></legend>
 
 		<div class="type-text">
-			<label for="link">URL</label>
+			<label for="link"><?= _('URL') ?></label>
 			<input type="text" name="link" id="link" value="<?= Request::get('link', @$link['link']) ?>">
 		</div>
 
 		<div class="type-text">
-			<label for="title">Titel</label>
+			<label for="title"><?= _('Titel') ?></label>
 			<input type="text" name="title" id="title" value="<?= Request::get('title', @$link['title']) ?>">
 		</div>
 

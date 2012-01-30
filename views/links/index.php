@@ -1,5 +1,3 @@
-<?= $this->render_partial('links/edit') ?>
-
 <table class="quicklinks default">
 	<thead>
 		<tr>
@@ -16,31 +14,31 @@
 			<td style="text-align: right;">
 			<?php if ($index): ?>
 				<a href="<?= $controller->url_for('links/move', $link['link_id'], 'up') ?>">
-					<?= Assets::img('icons/16/yellow/arr_1up.png', array(
+					<?= Assets::img('icons/16/yellow/arr_2up.png', array(
 						'title' => _('Nach oben bewegen'),
 						'alt'   => 'höher',
 					)) ?>
 				</a>
 			<?php else: ?>
-				<?= Assets::img('icons/16/grey/arr_1up.png', array(
+				<?= Assets::img('icons/16/grey/arr_2up.png', array(
 					'title' => _('Nach oben bewegen'),
 					'alt'   => 'höher',
 				)) ?>
 			<?php endif; ?>
 			<?php if ($index + 1 < count($links)): ?>
 				<a href="<?= $controller->url_for('links/move', $link['link_id'], 'down') ?>">
-					<?= Assets::img('icons/16/yellow/arr_1down.png', array(
+					<?= Assets::img('icons/16/yellow/arr_2down.png', array(
 						'title' => _('Nach unten bewegen'),
 						'alt'   => 'niedriger',
 					)) ?>
 				</a>
 			<?php else: ?>
-				<?= Assets::img('icons/16/grey/arr_1down.png', array(
+				<?= Assets::img('icons/16/grey/arr_2down.png', array(
 					'title' => _('Nach unten bewegen'),
 					'alt'   => 'niedriger',
 				)) ?>
 			<?php endif; ?>
-    			<a href="<?= $controller->url_for('links/edit', $link['link_id']) ?>">
+    			<a data-behaviour="modal" href="<?= $controller->url_for('links/edit', $link['link_id']) ?>">
     				<?= Assets::img('icons/16/blue/edit.png') ?>
     			</a>
 				<a href="<?= $controller->url_for('links/delete', $link['link_id']) ?>" onclick="return confirm('Wirklich?')">
@@ -51,19 +49,3 @@
 	<?php endforeach; ?>
 	</tbody>
 </table>
-
-<?
-$infobox = array(
-    'picture' => 'infobox/administration.jpg',
-    'content' => array(
-        array(
-            'kategorie' => _('Infobox'),
-            'eintrag'   => array(
-                array(
-                    'text' => 'Infobox',
-                    'icon' => 'icons/16/black/search.png'
-                )
-            )
-        )
-    )
-);        
