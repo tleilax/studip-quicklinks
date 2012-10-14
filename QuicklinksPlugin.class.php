@@ -5,7 +5,7 @@ require 'bootstrap.php';
  * QuicklinksPlugin.class.php
  *
  * @author  Jan-Hendrik Willms <tleilax+studip@gmail.com>
- * @version 0.4
+ * @version 0.5
  */
 
 class QuicklinksPlugin extends StudIPPlugin implements SystemPlugin
@@ -14,7 +14,7 @@ class QuicklinksPlugin extends StudIPPlugin implements SystemPlugin
     function __construct()
     {
         parent::__construct();
-        
+
         $navigation = new Navigation('Quicklinks');
         $navigation->setURL(PluginEngine::getURL($this, array(
             'link'  => $_SERVER['REQUEST_URI'],
@@ -24,7 +24,7 @@ class QuicklinksPlugin extends StudIPPlugin implements SystemPlugin
 
         $this->addStylesheet('assets/quicklinks.less');
         PageLayout::addScript($this->getPluginURL() . '/assets/patch.js');
-        
+
         $quick_links = Quicklink::GetInstance($GLOBALS['auth']->auth['uid']);
         PageLayout::addHeadElement('script', array(), 'STUDIP.Quicklinks = '.json_encode(array(
             'api'   => PluginEngine::getLink($this, array(), 'ajax/METHOD'),
