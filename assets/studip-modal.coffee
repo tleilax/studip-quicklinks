@@ -59,9 +59,9 @@ Released under the MIT license
         version: '0.9',
         selector: 'a[data-behaviour~=modal]',
         register: ->
-            $(@selector).on 'click', click_handler
+            $(@selector).live 'click', click_handler
         unregister: ->
-            $(@selector).off 'click', click_handler
+            $(@selector).die 'click', click_handler
 
     # Register modal behaviour
     STUDIP.Modal.register()

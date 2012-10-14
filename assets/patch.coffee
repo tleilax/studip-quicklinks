@@ -4,40 +4,44 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
 
     create_link = (link) ->
         """
-        <li id="ql-#{link.link_id}">
-            <a href=\"#{link.link}\">#{link.title}</a>
+        <li class="item" id="ql-#{link.link_id}" data-id="#{link.link_id}">
+            <a class="hidden options" href="#">
+                <img src="#{STUDIP.ASSETS_URL}/images/icons/16/blue/trash.png" alt="#{"entfernen".toLocaleString()}">
+            </a>
+            <a href="#{link.link}">#{link.title}</a>
         </li>
         """
 
     $ ->
         links = $('#barBottomright a').filter -> $(@).text() is 'Quicklinks'
 
-        return unless links.length
+        return unless links.length > 0
 
         parent = links.closest 'li'
 
         list = (create_link link for link in STUDIP.Quicklinks.links)
         html = """
-               <div class="quick-link-list">
-                  <label>
-                      <input type="checkbox"}>
-                      #{'Aktuelle Seite'.toLocaleString()}
-                  </label>
-                  <ul>#{list.join("\n")}</ul>
+               <div class="quick-links list left">
+                   <ul>
+                       <li class="item trigger">
+                           <label>
+                               <input type="checkbox">
+                               <span>#{'Aktuelle Seite'.toLocaleString()}</span>
+                           </label>
+                       </li>
+                       #{list.join("\n")}
+                   </ul>
                </div>
                """
-        div = $(html).css
-            right: 0
-            top  : parent.height()
+        div = $(html)
 
-        $(':checkbox', div).attr 'checked', STUDIP.Quicklinks.id?
+        $(':checkbox', div).attr 'checked', STUDIP.Quicklinks.id != false
 
-        parent.append div
-        parent.addClass 'quick-link'
+        parent.append(div)
         parent.hover (event) ->
             $(@).toggleClass 'hovered', event.type is 'mouseenter'
 
-    $('.quick-link-list :checkbox').on 'click', ->
+    $('.quick-links.list :checkbox').live 'click', ->
         uri    = STUDIP.Quicklinks.api
         params = {}
 
@@ -50,32 +54,30 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
 
         @disabled = true
 
+        $(@).showAjaxNotification()
         $.post uri, params, (json) =>
-            console.log json
             if json.link_id?
-                $('.quick-link-list ul').append create_link(json)
+                link = $ create_link(json)
+                $('.quick-links.list ul').append link.hide()
+                link.show 'blind'
             else
-                $("#ql-#{STUDIP.Quicklinks.id}").remove()
+                $("#ql-#{STUDIP.Quicklinks.id}").hide 'blind', -> $(@).remove()
 
             STUDIP.Quicklinks.id = json.link_id ? false
 
             @disabled = false
             @checked  = json.link_id?
+            $(@).hideAjaxNotification()
+            
+    $('.quick-links.list a.options').live 'click', ->
+        id  = "" + $(@).closest('.item').data().id
+        uri = STUDIP.Quicklinks.api.replace 'METHOD', "remove/#{id}"
+        
+        $.post uri, (json) =>
+            $("#ql-#{id}").hide 'blind', -> $(@).remove()
+
+            if id is STUDIP.Quicklinks.id
+                STUDIP.Quicklinks.id = false
+                $('.quick-links.list :checkbox').attr 'checked', false
 
 )(jQuery)
-
-###
-$(':checkbox', input).click(function () {
-    $.post(uri, params, function (json) {
-        if (!json.link_id) {
-            $('#ql-' + STUDIP.Quicklinks.id).remove();
-        } else {
-            $(Mustache.to_html(templates.link, json)).appendTo('.quick-link-list ul');
-        }
-        STUDIP.Quicklinks.id = json.link_id || false;
-        $(':checkbox', input).attr('checked', !!json.link_id).attr('disabled', false);
-    }, 'json');
-    return false;
-}).attr('checked', !!STUDIP.Quicklinks.id);
-
-###

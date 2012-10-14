@@ -1,0 +1,30 @@
+.quick-links.list {
+    label {
+        cursor: pointer;
+        display: block;
+        font-weight: bold;
+    }
+    input[type="checkbox"] {
+        clip: rect(0 0 0 0);
+        position: absolute;
+
+        ~ span {
+            background: url("@{icon-path}/blue/checkbox-unchecked.png") 4px center no-repeat;
+            display: inline-block;
+            padding-left: 24px;
+        }
+        &:checked ~ span {
+            background-image: url("@{icon-path}/blue/checkbox-checked.png");
+        }
+    }
+}
+
+
+table.quicklinks tbody {
+    td:last-child {
+        visibility: hidden;
+    }
+    tr:hover td:last-child {
+        visibility: visible;
+    }
+}

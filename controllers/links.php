@@ -1,17 +1,20 @@
 <?php
-class LinksController extends AppController {
-
-    public function before_filter(&$action, &$args) {
+class LinksController extends QuicklinksController
+{
+    function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
 
         PageLayout::setTitle(_('Quicklink Verwaltung'));
         $this->set_layout($GLOBALS['template_factory']->open('layouts/base'));
+
         $this->user_id = $GLOBALS['auth']->auth['uid'];
-        
-        parent::before_filter($action, $args);
+        $this->quick_links = Quicklink::GetInstance($this->user_id);
     }
 
-    public function index_action() {
-        $this->links = Quicklink::LoadAll($this->user_id);
+    function index_action()
+    {
+        $this->links = $this->quick_links->loadAll();
 
         $this->setInfoboxImage('infobox/administration.jpg');
         $this->addToInfobox(_('Aktionen'),
@@ -19,7 +22,8 @@ class LinksController extends AppController {
                             'icons/16/black/plus.png');
     }
 
-    public function edit_action ($id = null) {
+    function edit_action ($id = null)
+    {
         if (Request::submitted('store')) {
             $errors = array();
 
@@ -31,7 +35,7 @@ class LinksController extends AppController {
             }
 
             if (empty($errors)) {
-                Quicklink::Save($this->user_id, $id, Request::get('link'), Request::get('title'));
+                $this->quick_links->store($id, Request::get('link'), Request::get('title'));
                 PageLayout::postMessage(Messagebox::success(_('Der Link wurde gespeichert.')));
                 $this->redirect('links/index');     
             } else {            
@@ -40,20 +44,21 @@ class LinksController extends AppController {
         }
         
         if ($id) {
-            $this->link = Quicklink::Load($this->user_id, $id);
+            $this->link = $this->quick_links->load($id);
         }
     }
     
-    public function move_action($id, $direction) {
-        Quicklink::Move($this->user_id, $id, $direction);
+    function move_action($id, $direction)
+    {
+        $this->quick_links->move($id, $direction);
         PageLayout::postMessage(Messagebox::success(_('Der Link wurde verschoben.')));
         $this->redirect('links/index');
     }
     
-    public function delete_action($id) {
-        Quicklink::Delete($this->user_id, $id);
+    function delete_action($id)
+    {
+        $this->quick_links->remove($id);
         PageLayout::postMessage(Messagebox::success(_('Der Link wurde gelöscht.')));
         $this->redirect('links/index');
     }
-
 }

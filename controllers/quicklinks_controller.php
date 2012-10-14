@@ -1,5 +1,5 @@
 <?
-class AppController extends StudipController
+class QuicklinksController extends StudipController
 {
     function before_filter(&$action, &$args)
     {
