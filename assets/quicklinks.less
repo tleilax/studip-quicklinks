@@ -1,4 +1,11 @@
-.quick-links.list {
+#barBottomright .quick-links.list {
+    @width: 300px;
+    width: @width;
+    max-width: @width;
+
+    &.below { left: -(@width / 2 - 9); }
+    .item { width: @width - 8px; }
+
     label {
         cursor: pointer;
         display: block;
@@ -16,15 +23,5 @@
         &:checked ~ span {
             background-image: url("@{icon-path}/blue/checkbox-checked.png");
         }
-    }
-}
-
-
-table.quicklinks tbody {
-    td:last-child {
-        visibility: hidden;
-    }
-    tr:hover td:last-child {
-        visibility: visible;
     }
 }

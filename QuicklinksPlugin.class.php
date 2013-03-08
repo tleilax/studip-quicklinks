@@ -22,8 +22,12 @@ class QuicklinksPlugin extends StudIPPlugin implements SystemPlugin
         ), 'links'));
         Navigation::insertItem('/links/quick', $navigation, 'logout');
 
-        $this->addStylesheet('assets/quicklinks.less');
-        PageLayout::addScript($this->getPluginURL() . '/assets/patch.js');
+        if (Request::int('make')) {
+            $this->addStylesheet('assets/quicklinks.less');
+        } else {
+            PageLayout::addStylesheet($this->getPluginURL() . '/assets/quicklinks.min.css');
+        }
+        PageLayout::addScript($this->getPluginURL() . '/assets/patch.min.js');
 
         $quick_links = Quicklink::GetInstance($GLOBALS['auth']->auth['uid']);
         PageLayout::addHeadElement('script', array(), 'STUDIP.Quicklinks = '.json_encode(array(
@@ -37,11 +41,13 @@ class QuicklinksPlugin extends StudIPPlugin implements SystemPlugin
     function initialize ()
     {
         Navigation::getItem('/links/quick')->setURL(PluginEngine::getLink($this, array(), 'links'));
-        PageLayout::addScript($this->getPluginURL() . '/assets/studip-modal.js');
+        PageLayout::addScript($this->getPluginURL() . '/assets/studip-modal.min.js');
     }
 
     function perform($unconsumed_path)
     {
+        URLHelper::removeLinkParam('cid');
+
         $dispatcher = new Trails_Dispatcher(
             $this->getPluginPath(),
             rtrim(PluginEngine::getLink($this, array(), null), '/'),

@@ -2,7 +2,7 @@
 Modal behaviour for Stud.IP v0.9
 Released under the MIT license
 ###
-(($, STUDIP) ->
+do ($ = jQuery, STUDIP = STUDIP) ->
     # Initialize STUDIP object if neccessary
     STUDIP ?= {}
     return if STUDIP.Modal?
@@ -65,5 +65,3 @@ Released under the MIT license
 
     # Register modal behaviour
     STUDIP.Modal.register()
-
-)(jQuery, STUDIP)

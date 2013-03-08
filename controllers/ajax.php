@@ -3,7 +3,7 @@ class AjaxController extends AuthenticatedController
 {
     function before_filter(&$action, &$args)
     {
-        $this->user_id     = $GLOBALS['auth']->auth['uid'];
+        $this->user_id     = $GLOBALS['user']->id;
         $this->quick_links = Quicklink::GetInstance($this->user_id);
     }
 

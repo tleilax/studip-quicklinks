@@ -7,13 +7,14 @@ class QuicklinksController extends StudipController
 
         if (Request::isAjax()) {
             $this->set_layout(null);
+            $this->set_content_type('text/html;Charset=windows-1252');
         }
     }
-    
+
     /**
      * Spawns a new infobox variable on this object, if neccessary.
      **/
-    private function populateInfobox()
+    protected function populateInfobox()
     {
         if (!isset($this->infobox)) {
             $this->infobox = array(

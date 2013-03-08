@@ -1,7 +1,8 @@
 throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
 
-(($) ->
+do ($ = jQuery) ->
 
+    # Creates the html for a link
     create_link = (link) ->
         """
         <li class="item" id="ql-#{link.link_id}" data-id="#{link.link_id}">
@@ -12,18 +13,23 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
         </li>
         """
 
-    $ ->
+    # Build link list on dom ready
+    $(document).ready ->
         links = $('#barBottomright a').filter -> $(@).text() is 'Quicklinks'
 
         return unless links.length > 0
 
         parent = links.closest 'li'
+        href   = links.attr 'href'
 
         list = (create_link link for link in STUDIP.Quicklinks.links)
         html = """
                <div class="quick-links list left">
                    <ul>
                        <li class="item trigger">
+                           <a href="#{href}" class="options">
+                               <img src="#{STUDIP.ASSETS_URL}/images/icons/16/blue/admin.png" alt="#{"Verwaltung".toLocaleString()}">
+                           </a>
                            <label>
                                <input type="checkbox">
                                <span>#{'Aktuelle Seite'.toLocaleString()}</span>
@@ -33,7 +39,7 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
                    </ul>
                </div>
                """
-        div = $(html)
+        div = $ html
 
         $(':checkbox', div).attr 'checked', STUDIP.Quicklinks.id != false
 
@@ -41,6 +47,7 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
         parent.hover (event) ->
             $(@).toggleClass 'hovered', event.type is 'mouseenter'
 
+    # Add new link in list
     $('.quick-links.list :checkbox').live 'click', ->
         uri    = STUDIP.Quicklinks.api
         params = {}
@@ -55,6 +62,7 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
         @disabled = true
 
         $(@).showAjaxNotification()
+
         $.post uri, params, (json) =>
             if json.link_id?
                 link = $ create_link(json)
@@ -68,16 +76,38 @@ throw 'No valid Stud.IP environment' unless jQuery? and STUDIP?
             @disabled = false
             @checked  = json.link_id?
             $(@).hideAjaxNotification()
-            
-    $('.quick-links.list a.options').live 'click', ->
+
+    # Execute removal of quicklinks in list via ajax
+    $('.quick-links.list a.options').live 'click', (event) ->
+        event.preventDefault()
+
         id  = "" + $(@).closest('.item').data().id
         uri = STUDIP.Quicklinks.api.replace 'METHOD', "remove/#{id}"
-        
-        $.post uri, (json) =>
+
+        $.post uri, ->
             $("#ql-#{id}").hide 'blind', -> $(@).remove()
 
             if id is STUDIP.Quicklinks.id
                 STUDIP.Quicklinks.id = false
                 $('.quick-links.list :checkbox').attr 'checked', false
 
-)(jQuery)
+    # Execute moving of links in administration via ajax
+    $('table.quicklinks a[href*="links/move"]').live 'click', (event) ->
+        event.preventDefault()
+
+        href = $(@).addClass('ajaxing').attr 'href'
+        $(@).closest('tbody').find('td:last-child img').each ->
+            $(@).closest('a').click -> false
+            src = $(@).attr 'src'
+            $(@).css('opacity', 0.5).attr 'src', src.replace /yellow|blue/, 'grey'
+        $(@).closest('table').find(':checkbox').attr 'disabled', true
+
+        $.get href, (response) =>
+            $(@).closest('table.quicklinks').replaceWith response
+
+    # Deactivate bulk action button when no action is selected
+    $('table.quicklinks select[name=action]').live 'change', ->
+        $(@).next().attr 'disabled', !$(@).val()
+
+    $(document).ready ->
+        $('table.quicklinks select[name=action]').change()

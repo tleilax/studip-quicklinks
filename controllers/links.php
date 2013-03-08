@@ -3,10 +3,10 @@ class LinksController extends QuicklinksController
 {
     function before_filter(&$action, &$args)
     {
-        parent::before_filter($action, $args);
-
         PageLayout::setTitle(_('Quicklink Verwaltung'));
         $this->set_layout($GLOBALS['template_factory']->open('layouts/base'));
+
+        parent::before_filter($action, $args);
 
         $this->user_id = $GLOBALS['auth']->auth['uid'];
         $this->quick_links = Quicklink::GetInstance($this->user_id);
@@ -37,28 +37,49 @@ class LinksController extends QuicklinksController
             if (empty($errors)) {
                 $this->quick_links->store($id, Request::get('link'), Request::get('title'));
                 PageLayout::postMessage(Messagebox::success(_('Der Link wurde gespeichert.')));
-                $this->redirect('links/index');     
-            } else {            
+                $this->redirect('links/index');
+            } else {
                 PageLayout::postMessage(Messagebox::error(_('Es sind Fehler aufgetreten.'), $errors));
             }
         }
-        
+
         if ($id) {
             $this->link = $this->quick_links->load($id);
         }
     }
-    
+
     function move_action($id, $direction)
     {
         $this->quick_links->move($id, $direction);
-        PageLayout::postMessage(Messagebox::success(_('Der Link wurde verschoben.')));
+        if (!Request::isAjax()) {
+            PageLayout::postMessage(Messagebox::success(_('Der Link wurde verschoben.')));
+        }
         $this->redirect('links/index');
     }
-    
+
     function delete_action($id)
     {
         $this->quick_links->remove($id);
-        PageLayout::postMessage(Messagebox::success(_('Der Link wurde gelöscht.')));
+        if (!Request::isAjax()) {
+            PageLayout::postMessage(Messagebox::success(_('Der Link wurde gelöscht.')));
+        }
+        $this->redirect('links/index');
+    }
+    
+    function bulk_action()
+    {
+        $action = Request::option('action');
+        $ids    = Request::optionArray('ids');
+        if (in_array('all', $ids)) {
+            $ids = $this->quick_links->loadAllIds();
+        }
+        if ($action === 'delete') {
+            array_map(array($this->quick_links, 'remove'), $ids);
+
+            $count   = count($ids);
+            $message = sprintf(ngettext('Ein Link wurde gelöscht', '%u Links wurden gelöscht', $count), $count);
+            PageLayout::postMessage(MessageBox::success($message));
+        }
         $this->redirect('links/index');
     }
 }
