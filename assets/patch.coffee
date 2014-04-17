@@ -78,7 +78,7 @@ do ($ = jQuery) ->
             $(@).hideAjaxNotification()
 
     # Execute removal of quicklinks in list via ajax
-    $('.quick-links.list a.options').live 'click', (event) ->
+    $('.quick-links.list :not(:trigger) a.options').live 'click', (event) ->
         event.preventDefault()
 
         id  = "" + $(@).closest('.item').data().id
@@ -104,10 +104,3 @@ do ($ = jQuery) ->
 
         $.get href, (response) =>
             $(@).closest('table.quicklinks').replaceWith response
-
-    # Deactivate bulk action button when no action is selected
-    $('table.quicklinks select[name=action]').live 'change', ->
-        $(@).next().attr 'disabled', !$(@).val()
-
-    $(document).ready ->
-        $('table.quicklinks select[name=action]').change()

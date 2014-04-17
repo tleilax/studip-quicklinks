@@ -1,9 +1,7 @@
-build: css js
+build: js
 
-css:
-	recess --compress assets/quicklinks.css > assets/quicklinks.min.css
-
-js: assets/patch.js assets/studip-modal.js
+js: assets/patch.js
+	uglifyjs assets/html-additions.js --mangle --compress > assets/html-additions.min.js
 
 %.js: %.coffee
 	coffee --compile --print --bare $< > $@

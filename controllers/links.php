@@ -4,6 +4,7 @@ class LinksController extends QuicklinksController
     function before_filter(&$action, &$args)
     {
         PageLayout::setTitle(_('Quicklink Verwaltung'));
+        Navigation::activateItem('/links/quick');
         $this->set_layout($GLOBALS['template_factory']->open('layouts/base'));
 
         parent::before_filter($action, $args);
@@ -18,8 +19,8 @@ class LinksController extends QuicklinksController
 
         $this->setInfoboxImage('infobox/administration.jpg');
         $this->addToInfobox(_('Aktionen'),
-                            sprintf('<a data-behaviour="modal" href="%s">%s</a>', $this->url_for('links/edit'), _('Neuen Link eintragen')),
-                            'icons/16/black/plus.png');
+                            sprintf('<a rel="lightbox" href="%s">%s</a>', $this->url_for('links/edit'), _('Neuen Link eintragen')),
+                            'icons/16/black/add.png');
     }
 
     function edit_action ($id = null)

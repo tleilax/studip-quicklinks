@@ -8,7 +8,9 @@
     <thead>
         <tr>
             <th>
-                <input type="checkbox" name="ids[]" value="all" data-proxyfor="table.quicklinks tbody :checkbox">
+                <input type="checkbox" name="ids[]" value="all"
+                       data-proxyFor="table.quicklinks tbody :checkbox"
+                       data-disableIfEmpty="#bulk-action">
             </th>
             <th><?= _('Link') ?></th>
             <th>&nbsp;</th>
@@ -50,7 +52,7 @@
                     'alt'   => _('niedriger'),
                 )) ?>
             <? endif; ?>
-                <a data-behaviour="modal" href="<?= $controller->url_for('links/edit', $link['link_id']) ?>">
+                <a rel="lightbox" href="<?= $controller->url_for('links/edit', $link['link_id']) ?>">
                     <?= Assets::img('icons/16/blue/edit.png') ?>
                 </a>
                 <a href="<?= $controller->url_for('links/delete', $link['link_id']) ?>" onclick="return confirm('<?= _('Wirklich?') ?>')">
@@ -63,11 +65,11 @@
     <tfoot>
         <tr>
             <td colspan="3" class="printhead">
-                <select name="action">
+                <select id="bulk-action" name="action" data-disableIfEmpty="#bulk-button">
                     <option value="">- <?= _('Bitte Aktion auswählen') ?></option>
                     <option value="delete"><?= _('Markierte Einträge löschen') ?></option>
                 </select>
-                <?= Studip\Button::createAccept(_('Ausführen'), 'bulk') ?>
+                <?= Studip\Button::createAccept(_('Ausführen'), 'bulk', array('id' => 'bulk-button')) ?>
             </td>
         </tr>
     </tfoot>

@@ -11,57 +11,21 @@ class QuicklinksController extends StudipController
         }
     }
 
-    /**
-     * Spawns a new infobox variable on this object, if neccessary.
-     **/
-    protected function populateInfobox()
+    // customized #url_for for plugins
+    public function url_for($to)
     {
-        if (!isset($this->infobox)) {
-            $this->infobox = array(
-                'picture' => 'blank.gif',
-                'content' => array()
-            );
+        $args = func_get_args();
+
+        # find params
+        $params = array();
+        if (is_array(end($args))) {
+            $params = array_pop($args);
         }
-    }
 
-    /**
-     * Sets the header image for the infobox.
-     *
-     * @param String $image Image to display, path is relative to :assets:/images
-     **/
-    function setInfoBoxImage($image)
-    {
-        $this->populateInfobox();
+        # urlencode all but the first argument
+        $args = array_map('urlencode', $args);
+        $args[0] = $to;
 
-        $this->infobox['picture'] = $image;
-    }
-
-    /**
-     * Adds an item to a certain category section of the infobox. Categories
-     * are created in the order this method is invoked. Multiple occurences of
-     * a category will add items to the category.
-     *
-     * @param String $category The item's category title used as the header
-     * above displayed category - write spoken not
-     * tech language ^^
-     * @param String $text The content of the item, may contain html
-     * @param String $icon Icon to display in front the item, path is
-     * relative to :assets:/images
-     **/
-    function addToInfobox($category, $text, $icon = 'blank.gif')
-    {
-        $this->populateInfobox();
-
-        $infobox = $this->infobox;
-
-        if (!isset($infobox['content'][$category])) {
-            $infobox['content'][$category] = array(
-                'kategorie' => $category,
-                'eintrag' => array(),
-            );
-        }
-        $infobox['content'][$category]['eintrag'][] = compact('icon', 'text');
-
-        $this->infobox = $infobox;
+        return PluginEngine::getURL($this->dispatcher->plugin, $params, join('/', $args));
     }
 }

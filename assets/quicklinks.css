@@ -45,10 +45,10 @@
   position: absolute;
 }
 #barBottomright .quick-links.list input[type="checkbox"] ~ span {
-  background: url("http://127.0.0.1/~tleilax/studip/trunk/public/assets/images/icons/16/blue/checkbox-unchecked.png") 4px center no-repeat;
+  background: url("http://127.0.0.1/~tleilax/studip/trunk/assets/images/icons/16/blue/checkbox-unchecked.png") 4px center no-repeat;
   display: inline-block;
   padding-left: 24px;
 }
 #barBottomright .quick-links.list input[type="checkbox"]:checked ~ span {
-  background-image: url("http://127.0.0.1/~tleilax/studip/trunk/public/assets/images/icons/16/blue/checkbox-checked.png");
+  background-image: url("http://127.0.0.1/~tleilax/studip/trunk/assets/images/icons/16/blue/checkbox-checked.png");
 }
