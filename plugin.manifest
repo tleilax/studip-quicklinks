@@ -1,7 +1,7 @@
 pluginname=Quick Links
 pluginclassname=QuicklinksPlugin
 origin=UOL
-version=0.6
+version=0.7
 description=Das Plugin stellt die Möglichkeit bereit, jede Seite für den Schnellzugriff zu markieren.
-studipMinVersion=2.0
-studipMaxVersion=2.4
+studipMinVersion=2.4
+studipMaxVersion=3.1
