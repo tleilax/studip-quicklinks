@@ -48,7 +48,7 @@ do ($ = jQuery) ->
             $(@).toggleClass 'hovered', event.type is 'mouseenter'
 
     # Add new link in list
-    $('.quick-links.list :checkbox').live 'click', ->
+    $(document).on 'click', '.quick-links.list :checkbox', ->
         uri    = STUDIP.Quicklinks.api
         params = {}
 
@@ -78,7 +78,7 @@ do ($ = jQuery) ->
             $(@).hideAjaxNotification()
 
     # Execute removal of quicklinks in list via ajax
-    $('.quick-links.list :not(:trigger) a.options').live 'click', (event) ->
+    $(document).on 'click', '.quick-links.list :not(.trigger) a.options', (event) ->
         event.preventDefault()
 
         id  = "" + $(@).closest('.item').data().id
@@ -92,7 +92,7 @@ do ($ = jQuery) ->
                 $('.quick-links.list :checkbox').attr 'checked', false
 
     # Execute moving of links in administration via ajax
-    $('table.quicklinks a[href*="links/move"]').live 'click', (event) ->
+    $(document).on 'click', 'table.quicklinks a[href*="links/move"]', (event) ->
         event.preventDefault()
 
         href = $(@).addClass('ajaxing').attr 'href'
